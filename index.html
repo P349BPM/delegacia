@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu Principal - DEPLAN PMMG</title>
+
+<style>
+    /* Paleta Adequada à PMMG */
+    :root {
+        --cor-azul: #0b1e3d;
+        --cor-dourado: #c6a25f;
+        --cor-cinza: #e5e5e5;
+        --cor-preto: #1a1a1a;
+        --cor-branco: #ffffff;
+        --shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+    }
+
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background: var(--cor-azul);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    header {
+        width: 100%;
+        background: var(--cor-preto);
+        box-shadow: var(--shadow);
+        padding: 18px 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+    }
+
+    header img {
+        width: 65px;
+        height: auto;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 1.8em;
+        font-weight: bold;
+        color: var(--cor-dourado);
+        text-shadow: 0 0 8px rgba(0,0,0,0.4);
+    }
+
+    .container {
+        margin-top: 60px;
+        width: 90%;
+        max-width: 950px;
+        display: grid;
+        gap: 28px;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .card-btn {
+        background: linear-gradient(145deg, var(--cor-dourado), #b38c4e);
+        color: var(--cor-branco);
+        font-size: 1.15em;
+        text-align: center;
+        text-decoration: none;
+        padding: 35px 20px;
+        border-radius: 12px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        box-shadow: var(--shadow);
+        transition: .3s;
+        border: 3px solid var(--cor-branco);
+    }
+
+    .card-btn:hover {
+        transform: translateY(-6px) scale(1.03);
+        filter: brightness(1.05);
+    }
+
+    footer {
+        color: var(--cor-cinza);
+        font-size: 0.9em;
+        text-align: center;
+        margin-top: auto;
+        padding: 14px;
+        opacity: 0.8;
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <img src="img/logo.png" alt="Logo PMMG">
+    <h1>Controle de Delegacia - PMMG</h1>
+</header>
+
+<div class="container">
+
+    <a href="troca.html" class="card-btn">
+        🔄 Troca de Serviço
+    </a>
+
+    <a href="protocolo.html" class="card-btn">
+        📋 Protocolo de Documentos
+    </a>
+
+    <a href="risco.html" class="card-btn">
+        ⛓️ Guardas & Risco de Presos
+    </a>
+
+</div>
+
+<footer>© PMMG - Sistema de Gestão DEPLAN</footer>
+
+</body>
+</html>

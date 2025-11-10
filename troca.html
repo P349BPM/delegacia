@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Troca de Serviço - DEPLAN PMMG</title>
+    
+    <link rel="stylesheet" href="sistema.css">
+    
+</head>
+
+<body>
+
+    <header>
+        <img src="img/logo.png" alt="Logo PMMG">
+        <h1>Controle de Delegacia - PMMG</h1>
+    </header>
+
+    <main class="content">
+
+        <h2>Troca de Serviço</h2>
+        
+        <a href="index.html" class="back-btn action-btn secondary-btn">
+            ← Voltar ao Menu Principal
+        </a>
+        <div class="military-input-area entry-area">
+            <h3>Dados do Militar que Assumirá o Serviço</h3>
+
+            <div class="input-group">
+                <label for="graduacaoEntrada">Graduação:</label>
+                <select id="graduacaoEntrada" class="custom-select">
+                    <option value="Sd">Sd</option>
+                    <option value="Cb">Cb</option>
+                    <option value="3º Sgt">3º Sgt</option>
+                    <option value="2º Sgt">2º Sgt</option>
+                    <option value="1º Sgt">1º Sgt</option>
+                    <option value="Sub Ten">Sub Ten</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="numeroPMEntrada">Número do PM:</label>
+                <input type="text" id="numeroPMEntrada" placeholder="000.000-0" maxlength="12">
+            </div>
+
+            <div class="input-group full-width">
+                <label for="nomeMilitarEntrada">Nome Completo:</label>
+                <input type="text" id="nomeMilitarEntrada" placeholder="Nome Completo do Militar">
+            </div>
+
+            <div class="action-row">
+                <button id="incluirMilitarBtnEntrada" class="action-btn primary-btn">
+                    + Incluir Militar (Entrada)
+                </button>
+
+                <div class="datetime-info">
+                    <span id="dataHoraAtual">--/--/---- --:--</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="military-list-container">
+            <h4>Militares Incluídos no Serviço (Entrada)</h4>
+            <ul id="listaMilitaresEntrada">
+            </ul>
+        </div>
+        
+        <div class="report-data-area">
+            <h3>Informações do Serviço Entregue</h3>
+
+            <div class="input-group">
+                <label for="presosRecebidos">Prisioneiros Recebidos (Quantidade):</label>
+                <input type="number" id="presosRecebidos" value="0" min="0" style="width: 100px;">
+            </div>
+
+            <div class="input-group full-width">
+                <label for="objetosGuarda">Objetos Sob Guarda (Relacionados a Crimes):</label>
+                <textarea id="objetosGuarda" rows="3"
+                    placeholder="Descreva os objetos, cautelas, crimes relacionados e local de guarda."></textarea>
+            </div>
+
+            <div class="input-group full-width">
+                <label for="relatorioFinal">Relatório Final do Turno (Observação para Próxima Equipe):</label>
+                <textarea id="relatorioFinal" rows="5"
+                    placeholder="Descreva as ocorrências relevantes do turno (atendimentos, viaturas, prisões, etc.)."></textarea>
+            </div>
+
+            <div class="input-group full-width">
+                <label for="obsEquipeAnterior">Observações Deixadas Pela Equipe Anterior (Turno Anterior):</label>
+                <textarea id="obsEquipeAnterior" rows="3" readonly placeholder="Carregando observações..."></textarea>
+            </div>
+
+        </div>
+
+        <div class="action-row final-action">
+            <button id="salvarRelatorioBtn" class="action-btn primary-btn large-btn">
+                Salvar Relatório e Finalizar Troca
+            </button>
+        </div>
+        
+        <div class="action-row final-action" style="margin-top: 5px;">
+             <button id="exportarRelatorioBtn" class="action-btn secondary-btn large-btn">
+                ⬇️ Exportar Relatório do Último Turno
+            </button>
+        </div>
+        <div class="history-container">
+            <h4>Últimos 3 Relatórios de Troca (Histórico)</h4>
+            <div id="historicoRelatorios" class="history-box">
+                <p class="empty-history">Nenhum relatório anterior encontrado.</p>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>© PMMG - Sistema de Gestão DEPLAN</footer>
+
+    <script src="sistema.js"></script> 
+
+</body>
+
+</html>

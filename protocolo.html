@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protocolo de Documentos - DEPLAN PMMG</title>
+    
+    <link rel="stylesheet" href="sistema.css">
+    
+    <style>
+        /* CSS Adicional para o Novo Layout de Cartões de Protocolo */
+        :root {
+            --cor-azul: #003366; /* Dark Blue */
+            --cor-gold: #FFC300; /* Gold */
+            --cor-cinza-claro: #f4f4f4; /* Light Gray */
+            --cor-vermelho: #f44336;
+            --cor-verde: #4CAF50; /* Green */
+            --cor-laranja: #FFC107; /* Amarelo/Laranja */
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .military-input-area h3 {
+            font-size: 1.2em;
+            color: var(--cor-azul);
+            border-bottom: 2px solid var(--cor-gold);
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        /* --- Estilos do Cartão de Protocolo --- */
+        .protocol-card {
+            border: 2px solid var(--cor-cinza-claro);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);
+            background-color: var(--cor-branco);
+        }
+        .card-aberto {
+            border-left: 5px solid var(--cor-gold);
+        }
+        .card-finalizado {
+            border-left: 5px solid var(--cor-azul);
+            opacity: 0.8;
+        }
+        
+        /* Cabeçalho do Cartão (REDS e Encerrar) */
+        .protocol-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        .protocol-reds {
+            color: var(--cor-azul);
+            font-size: 1.2em;
+        }
+        /* Estilo para a hora de lançamento */
+        .launch-timestamp {
+            font-size: 0.8em;
+            color: #888;
+            margin-right: 5px;
+        }
+        .header-separator {
+            border: 0;
+            height: 1px;
+            background-color: var(--cor-gold);
+            margin: 10px 0;
+        }
+
+        /* Corpo do Cartão (Oitivas, Preso, PCNET) */
+        .oitivas-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .oitiva-item-list {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+            border-bottom: 1px dotted #ccc;
+            font-size: 0.95em;
+        }
+        .oitiva-item-list:last-of-type {
+            border-bottom: none;
+        }
+        .oitiva-nome {
+            font-weight: bold;
+        }
+        
+        /* Estilos específicos para o Risco do Preso */
+        .preso-list-header {
+            background-color: #fcfcfc;
+            padding: 8px 0;
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column;
+            border-bottom: 1px solid #ccc !important;
+        }
+        .presos-container-details {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+        .preso-item-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 3px 0;
+            font-size: 0.9em;
+        }
+        .risk-pill {
+            /* Pill agora é o container do risco */
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* Cores de Risco (Conforme solicitado) */
+        .risk-pill.risk-tag-low { 
+            background-color: var(--cor-verde); 
+            color: var(--cor-branco);
+        }
+        .risk-pill.risk-tag-medium { 
+            background-color: var(--cor-laranja); 
+            color: var(--cor-azul);
+        }
+        .risk-pill.risk-tag-high { 
+            background-color: var(--cor-vermelho); 
+            color: var(--cor-branco);
+        }
+
+        /* PCNET Status */
+        .body-separator {
+            border: 0;
+            height: 1px;
+            background-color: var(--cor-cinza-claro);
+            margin: 10px 0;
+        }
+        .pcnet-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+            font-weight: bold;
+        }
+        .pcnet-label {
+            color: var(--cor-azul);
+        }
+
+        /* Botões */
+        .action-btn { transition: background-color 0.2s; }
+        .primary-btn { background-color: #4CAF50; color: white; border: none; }
+        .secondary-btn { background-color: #FFC300; color: var(--cor-azul); border: none; }
+        .danger-btn { background-color: var(--cor-vermelho); color: white; border: none; }
+        .x-small-btn { padding: 4px 8px; font-size: 0.75em; margin-left: 5px; border-radius: 4px; }
+        .status-tag { padding: 3px 6px; border-radius: 4px; font-size: 0.7em; }
+        .tag-high { background-color: var(--cor-gold); color: var(--cor-azul); }
+        .tag-low { background-color: #888; color: white; }
+        .tag-medium { color: var(--cor-vermelho); font-weight: bold; }
+        .timestamp { font-size: 0.9em; color: #555; }
+
+        /* Contêiner da lista de protocolos */
+        .protocol-list-container {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: var(--cor-cinza-claro);
+            border-radius: 8px;
+        }
+
+        /* Novos estilos para o campo batalhão */
+        .reds-batalhao-container {
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+        }
+        .reds-batalhao-container .input-group {
+            flex: 1;
+        }
+        .reds-batalhao-container .input-group:first-child {
+            flex: 2;
+        }
+        @media (max-width: 768px) {
+            .reds-batalhao-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <img src="img/logo.png" alt="Logo PMMG">
+        <h1>Controle de Delegacia - PMMG</h1>
+    </header>
+
+    <main class="content">
+
+        <h2>Lançamento de Protocolo (REDS)</h2>
+
+        <div class="header-actions">
+            <a href="index.html" class="back-btn action-btn secondary-btn">
+                ← Voltar ao Menu Principal
+            </a>
+        </div>
+
+        <div class="military-input-area general-data-area">
+            <h3>Nº REDS Ativo</h3>
+            
+            <div class="reds-batalhao-container">
+                <div class="input-group full-width">
+                    <label for="numeroREDS">Nº REDS/BO (Cria um novo protocolo):</label>
+                    <input type="text" id="numeroREDS" placeholder="Ex: 2025-000000000-001" maxlength="19">
+                </div>
+                
+                <div class="input-group">
+                    <label for="batalhaoResponsavel">Batalhão Responsável:</label>
+                    <select id="batalhaoResponsavel" class="custom-select">
+                        <option value="">Selecione...</option>
+                        <option value="1º BPM">1º BPM</option>
+                        <option value="5º BPM">5º BPM</option>
+                        <option value="13º BPM">13º BPM</option>
+                        <option value="16º BPM">16º BPM</option>
+                        <option value="22º BPM">22º BPM</option>
+                        <option value="34º BPM">34º BPM</option>
+                        <option value="41º BPM">41º BPM</option>
+                        <option value="49º BPM">49º BPM</option>
+                        <option value="BPTRAN">BPTRAN</option>
+                        <option value="CME">CME</option>
+                        <option value="Outro">Outro</option>
+                    </select>
+                </div>
+            </div>
+            <p style="font-size: 0.8em; color: #888; margin-top: 5px;">* Digite o REDS e clique fora para criar o Protocolo/Cartão na lista abaixo.</p>
+        </div>
+        
+        <div class="military-input-area guarnicao-data-area">
+            <h3>Incluir Militar (Anexado ao REDS acima)</h3>
+            
+            <div class="input-group">
+                <label for="graduacaoGuarnicao">Graduação:</label>
+                <select id="graduacaoGuarnicao" class="custom-select">
+                    <option value="SD">SD</option>
+                    <option value="CB">CB</option>
+                    <option value="3º SGT">3º SGT</option>
+                    <option value="2º SGT">2º SGT</option>
+                    <option value="1º SGT">1º SGT</option>
+                    <option value="SUB TEN">SUB TEN</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="numeroPMGuarnicao">Número do PM:</label>
+                <input type="text" id="numeroPMGuarnicao" placeholder="000.000-0" maxlength="12">
+            </div>
+
+            <div class="input-group">
+                <label for="telefoneGuarnicao">Telefone:</label>
+                <input type="text" id="telefoneGuarnicao" placeholder="(31) 90000-0000" maxlength="15">
+            </div>
+
+            <div class="input-group full-width">
+                <label for="nomeMilitarGuarnicao">Nome Completo:</label>
+                <input type="text" id="nomeMilitarGuarnicao" placeholder="Nome Completo do Militar">
+            </div>
+
+            <div class="action-row">
+                <button id="incluirGuarnicaoBtn" class="action-btn primary-btn">
+                    + Incluir Militar (Protocolo)
+                </button>
+            </div>
+        </div>
+
+        <div class="military-input-area prisoner-area">
+            <h3>Incluir Preso e Risco (Anexado ao REDS acima)</h3>
+
+            <div class="input-group full-width">
+                <label for="nomePreso">Nome Completo do Preso:</label>
+                <input type="text" id="nomePreso" placeholder="Nome completo, incluindo alcunhas (se houver)">
+            </div>
+            
+            <div class="input-group">
+                <label for="docPreso">Documento (RG/CPF):</label>
+                <input type="text" id="docPreso" placeholder="RG ou CPF">
+            </div>
+            
+            <div class="risk-questionnaire full-width">
+                <h4>Questionário de Risco (Resposta Sim/Não)</h4>
+                
+                <div class="question-item">
+                    <label>1. Histórico de fuga/tentativa de fuga?</label>
+                    <select id="q1" class="custom-select">
+                        <option value="N">Não</option>
+                        <option value="S">Sim</option>
+                    </select>
+                </div>
+                <div class="question-item">
+                    <label>2. Envolvimento em homicídios/crimes graves?</label>
+                    <select id="q2" class="custom-select">
+                        <option value="N">Não</option>
+                        <option value="S">Sim</option>
+                    </select>
+                </div>
+                <div class="question-item">
+                    <label>3. Pertence ou possui ligação comprovada com ORCRIM?</label>
+                    <select id="q3" class="custom-select">
+                        <option value="N">Não</option>
+                        <option value="S">Sim</option>
+                    </select>
+                </div>
+                <div class="question-item">
+                    <label>4. Agressividade/resistência durante a prisão?</label>
+                    <select id="q4" class="custom-select">
+                        <option value="N">Não</option>
+                        <option value="S">Sim</option>
+                    </select>
+                </div>
+                <div class="question-item">
+                    <label>5. Necessidade de atenção médica/psicológica imediata?</label>
+                    <select id="q5" class="custom-select">
+                        <option value="N">Não</option>
+                        <option value="S">Sim</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="action-row prisoner-action">
+                <div class="risk-level-display">
+                    Risco Calculado: <span id="riskLevel" class="risk-low">BAIXO</span>
+                </div>
+                
+                <button id="incluirPresoBtn" class="action-btn primary-btn">
+                    + Incluir Preso (Protocolo)
+                </button>
+            </div>
+        </div>
+
+        <div class="protocol-list-container">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--cor-azul); padding-bottom: 5px; margin-bottom: 15px;">
+                <h4>Protocolos de Ocorrências (Clique no REDS para editar/acionar)</h4>
+                
+                <div class="input-group" style="margin-bottom: 0;">
+                    <input type="text" id="buscaRedsInput" placeholder="Buscar por Nº REDS..." style="width: 150px; padding: 8px;">
+                </div>
+            </div>
+            
+            <div id="listaProtocolos" class="history-box">
+                <p class="empty-history">NENHUM PROTOCOLO CADASTRADO.</p>
+            </div>
+        </div>
+        </main>
+
+    <footer>© PMMG - Sistema de Gestão DEPLAN</footer>
+
+    <script src="protocolo.js"></script> 
+
+</body>
+</html>

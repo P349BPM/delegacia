@@ -1,0 +1,439 @@
+/* Paleta Adequada à PMMG (Mantida do Menu Principal) */
+:root {
+    --cor-azul: #0b1e3d;
+    --cor-dourado: #c6a25f;
+    --cor-cinza: #e5e5e5;
+    --cor-preto: #1a1a1a;
+    --cor-branco: #ffffff;
+    --shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--cor-azul);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+header {
+    width: 100%;
+    background: var(--cor-preto);
+    box-shadow: var(--shadow);
+    padding: 18px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+}
+
+header img {
+    width: 65px;
+    height: auto;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8em;
+    font-weight: bold;
+    color: var(--cor-dourado);
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Novo estilo para o conteúdo principal da página */
+main.content {
+    background-color: var(--cor-branco);
+    width: 90%;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    flex-grow: 1;
+}
+
+main.content h2 {
+    color: var(--cor-azul);
+    border-bottom: 2px solid var(--cor-dourado);
+    padding-bottom: 10px;
+    margin-top: 0;
+    font-size: 1.6em;
+}
+
+/* --- Estilos Específicos para Troca de Serviço --- */
+
+.military-input-area {
+    background: var(--cor-cinza);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    border: 1px solid #ccc;
+}
+
+.military-input-area h3 {
+    color: var(--cor-azul);
+    margin-top: 0;
+    border-bottom: 1px solid var(--cor-dourado);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 1.4em;
+}
+
+.input-group {
+    display: inline-block;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    vertical-align: top;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: var(--cor-preto);
+    font-size: 0.9em;
+}
+
+.input-group input,
+.custom-select,
+.report-data-area textarea { /* Estilo unificado para textarea no report-data-area */
+    padding: 8px 10px;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+    font-size: 1em;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus,
+.custom-select:focus,
+.report-data-area textarea:focus {
+    border-color: var(--cor-dourado);
+    outline: none;
+}
+
+#numeroPMEntrada { /* Mudado de #numeroPM para #numeroPMEntrada */
+    width: 100px;
+}
+
+.custom-select {
+    width: 110px;
+    background-color: var(--cor-branco);
+    cursor: pointer;
+}
+
+.full-width {
+    display: block;
+    width: 100%;
+    margin-right: 0;
+}
+
+.full-width input,
+.full-width textarea { /* Adicionado textarea aqui */
+    width: 98%;
+    box-sizing: border-box;
+}
+
+.action-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px dashed #ccc;
+}
+
+.action-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.primary-btn {
+    background-color: var(--cor-azul);
+    color: var(--cor-branco);
+}
+
+.primary-btn:hover {
+    background-color: #08162b;
+}
+
+.datetime-info {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: var(--cor-azul);
+}
+
+/* Estilos da Lista de Militares */
+.military-list-container h4 {
+    color: var(--cor-azul);
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+#listaMilitares {
+    list-style: none;
+    padding: 0;
+}
+
+#listaMilitares li {
+    background-color: #f0f0f0;
+    border-left: 5px solid var(--cor-dourado);
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    color: var(--cor-preto);
+    font-size: 1em;
+}
+
+/* Ajuste para o negrito */
+#listaMilitares li strong.military-info {
+    font-weight: 900;
+}
+
+#listaMilitares li .timestamp {
+    font-size: 0.9em;
+    color: #666;
+    float: right;
+}
+
+
+/* Estilos para a Área de Dados do Relatório */
+.report-data-area {
+    /* AJUSTADO: Usando cor cinza para manter o padrão visual da caixa de militares */
+    background: var(--cor-cinza); 
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    border: 1px solid #ccc; /* Mantém a borda cinza */
+}
+
+/* ... o restante do CSS permanece inalterado ... */
+.report-data-area h3 {
+    color: var(--cor-azul);
+    margin-top: 0;
+    border-bottom: 1px solid var(--cor-dourado);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 1.4em;
+}
+
+/* Torna o campo de observação anterior mais discreto */
+#obsEquipeAnterior {
+    background-color: #f7f7f7;
+    color: #555;
+    cursor: default;
+}
+
+/* Estilos para o Botão Finalizar */
+.final-action {
+    justify-content: center;
+    margin-bottom: 40px;
+    border-top: none;
+}
+
+.large-btn {
+    padding: 15px 30px;
+    font-size: 1.1em;
+}
+
+/* Estilos para a Caixa de Histórico */
+.history-container h4 {
+    color: var(--cor-azul);
+    border-bottom: 1px solid var(--cor-azul);
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+.history-box {
+    display: grid;
+    gap: 15px;
+    padding: 10px;
+}
+
+.history-item {
+    background-color: var(--cor-cinza);
+    border-left: 5px solid var(--cor-azul);
+    padding: 15px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.history-item p {
+    margin: 5px 0;
+    font-size: 0.95em;
+    /* NOVO: Garante que todo o texto do parágrafo seja em maiúsculas */
+    text-transform: uppercase; 
+}
+
+.history-item strong {
+    color: var(--cor-azul);
+}
+
+.history-header {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: var(--cor-dourado);
+    border-bottom: 1px dashed #bbb;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.empty-history {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+}
+
+footer {
+    color: var(--cor-cinza);
+    font-size: 0.9em;
+    text-align: center;
+    margin-top: auto;
+    padding: 14px;
+    opacity: 0.8;
+    width: 100%;
+}
+
+/* Estilo para o botão Voltar */
+.back-btn {
+    display: inline-block;
+    padding: 8px 15px;
+    margin-bottom: 20px;
+    font-size: 1em;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid var(--cor-azul);
+}
+
+.secondary-btn {
+    background-color: var(--cor-cinza);
+    color: var(--cor-azul);
+}
+
+.secondary-btn:hover {
+    background-color: #d0d0d0;
+    transform: translateY(-2px) scale(1.01);
+}
+
+/* --- Estilos Específicos do Protocolo --- */
+
+.prisoner-area h3, .general-data-area h3 {
+    color: var(--cor-azul);
+    margin-top: 0;
+    border-bottom: 1px solid var(--cor-dourado);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 1.4em;
+}
+
+/* Estilo para a área do questionário */
+.risk-questionnaire {
+    background-color: var(--cor-branco);
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 15px;
+    border: 1px dashed #bbb;
+}
+
+.risk-questionnaire h4 {
+    color: var(--cor-azul);
+    font-size: 1.1em;
+    border-bottom: 1px solid var(--cor-dourado);
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.question-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px dotted #ddd;
+}
+
+.question-item label {
+    font-weight: 500;
+    font-size: 0.95em;
+    color: var(--cor-preto);
+}
+
+.risk-level-display {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--cor-azul);
+}
+
+/* Cores do Indicador de Risco */
+.risk-low { color: green; } /* Baixo */
+.risk-medium { color: orange; } /* Médio */
+.risk-high { color: red; } /* Alto */
+
+.prisoner-action {
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Lista de Presos */
+#listaPresos {
+    list-style: none;
+    padding: 0;
+}
+
+#listaPresos li {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-left: 5px solid var(--cor-azul);
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    color: var(--cor-preto);
+    font-size: 1em;
+}
+
+#listaPresos li strong {
+    font-weight: 700;
+    color: var(--cor-dourado);
+}
+
+#listaPresos li .risk-tag {
+    float: right;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    font-weight: bold;
+    color: white;
+}
+
+.tag-low { background-color: green; }
+.tag-medium { background-color: orange; }
+.tag-high { background-color: red; }
+
+/* Mantido o back-btn do arquivo anterior */
+.back-btn {
+    display: inline-block;
+    padding: 8px 15px;
+    margin-bottom: 20px;
+    font-size: 1em;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid var(--cor-azul);
+    text-transform: uppercase;
+}
+
+.secondary-btn {
+    background-color: var(--cor-cinza);
+    color: var(--cor-azul);
+}
+
+.secondary-btn:hover {
+    background-color: #d0d0d0;
+    transform: translateY(-2px) scale(1.01);
+}
