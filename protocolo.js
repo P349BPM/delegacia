@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const pmPattern = /^\d{3}\.\d{3}-\d{1}$/;
     const STORAGE_KEY = 'protocolosHistorico';
+    const RISCO_STORAGE_KEY = 'presosHistoricoPMMG';
 
     // --- MÁSCARAS E RISCO ---
     
@@ -120,13 +121,42 @@ document.addEventListener('DOMContentLoaded', () => {
         q1Input.value = q2Input.value = q3Input.value = q4Input.value = q5Input.value = 'N';
         calcularRisco();
     }
+    
+    // =========================================================================
+    // BLOCO DE FUNÇÕES PARA INTEGRAR COM A PÁGINA DE RISCO (risco.js)
+    // =========================================================================
 
-    // --- LÓGICA DE INCLUSÃO DE DADOS (VALIDAÇÃO REVISADA) ---
+    /**
+     * Adiciona um novo registro de preso/REDS ao histórico de risco.
+     * @param {object} dadosPreso - Dados do preso a ser salvo.
+     */
+    function addPresoToHistoricoRisco(dadosPreso) {
+        try {
+            const data = localStorage.getItem(RISCO_STORAGE_KEY);
+            const presosHistorico = data ? JSON.parse(data) : [];
+            
+            // Verifica se o preso já existe (usando ID único)
+            const index = presosHistorico.findIndex(p => p.id === dadosPreso.id);
+
+            if (index === -1) {
+                 presosHistorico.push(dadosPreso);
+            } else {
+                presosHistorico[index] = dadosPreso;
+            }
+
+            localStorage.setItem(RISCO_STORAGE_KEY, JSON.stringify(presosHistorico));
+        } catch (e) {
+            console.error("Erro ao salvar dados de risco/chegada:", e);
+        }
+    }
+
+    // =========================================================================
+    // LÓGICA DE INCLUSÃO DE DADOS
+    // =========================================================================
 
     incluirGuarnicaoBtn.addEventListener('click', () => {
         const reds = numeroREDSInput.value.trim().toUpperCase();
         const batalhao = batalhaoResponsavelSelect.value;
-        // CORREÇÃO: Verificar se tem pelo menos 15 caracteres (4-9-2) em vez de 19
         const isREDSValid = reds.length >= 15; 
         const isBatalhaoValid = batalhao !== '';
         
@@ -152,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 graduacao: graduacaoGuarnicaoInput.value,
                 numeroPM,
                 nome: nomeMilitar.toUpperCase(),
-                telefone,
+                telefone, // <--- O TELEFONE ESTÁ SENDO SALVO AQUI
                 dataHoraInclusao: new Date().toLocaleString('pt-BR'),
                 oitiva: {
                     nome: `${graduacaoGuarnicaoInput.value} ${nomeMilitar.toUpperCase()}`,
@@ -201,7 +231,6 @@ document.addEventListener('DOMContentLoaded', () => {
     incluirPresoBtn.addEventListener('click', () => {
         const reds = numeroREDSInput.value.trim().toUpperCase();
         const batalhao = batalhaoResponsavelSelect.value;
-        // CORREÇÃO: Verificar se tem pelo menos 15 caracteres (4-9-2) em vez de 19
         const isREDSValid = reds.length >= 15;
         const isBatalhaoValid = batalhao !== '';
 
@@ -220,11 +249,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const nivelRisco = calcularRisco();
 
         if (nomePreso) {
+            const dataHoraChegada = new Date();
+            
             const novoPreso = {
+                id: `${reds}-${Date.now()}-${Math.floor(Math.random() * 999)}`, 
                 nome: nomePreso.toUpperCase(),
                 doc: docPreso,
                 risco: nivelRisco,
-                dataHoraInclusao: new Date().toLocaleString('pt-BR')
+                dataHoraInclusao: dataHoraChegada.toLocaleString('pt-BR'),
+                dataHoraRecebimento: null
             };
             
             let protocolos = getHistorico();
@@ -236,17 +269,31 @@ document.addEventListener('DOMContentLoaded', () => {
                     reds: reds,
                     batalhao: batalhao,
                     status: 'ABERTO',
-                    dataLancamento: new Date().toLocaleString('pt-BR'),
+                    dataLancamento: dataHoraChegada.toLocaleString('pt-BR'),
                     guarnicao: [],
                     presos: [],
                     pcnet: { protocolo: '', dataHora: null },
                     entrega: { dataHora: null }
                 };
             }
-
+            
             protocolo.presos.push(novoPreso);
             salvarProtocolo(protocolo);
             currentREDS = reds;
+
+            const dadosRisco = {
+                id: novoPreso.id,
+                reds: reds,
+                nome: novoPreso.nome,
+                documento: novoPreso.doc,
+                risco: novoPreso.risco,
+                batalhao: batalhao,
+                cia: 'N/A', // Não está no formulário, mantido como N/A
+                chegada: dataHoraChegada.toISOString(),
+                saida: null 
+            };
+            addPresoToHistoricoRisco(dadosRisco);
+
 
             // Limpar campos de preso e resetar questionário
             nomePresoInput.value = '';
@@ -287,8 +334,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (protocolo && protocolo.presos.length > 0) {
             if (confirm(`Confirmar ENTREGA DO(S) PRESO(S) do REDS ${redsId} à PCMG?`)) {
-                protocolo.entrega.dataHora = new Date().toLocaleString('pt-BR');
+                const now = new Date();
+                protocolo.entrega.dataHora = now.toLocaleString('pt-BR');
                 salvarProtocolo(protocolo);
+                
+                // ATUALIZA O HISTÓRICO DE RISCO COM O HORÁRIO DE SAÍDA
+                const data = localStorage.getItem(RISCO_STORAGE_KEY);
+                let presosHistorico = data ? JSON.parse(data) : [];
+
+                protocolo.presos.forEach(presoProtocolo => {
+                    const index = presosHistorico.findIndex(p => p.id === presoProtocolo.id);
+                    if (index !== -1) {
+                        // Garante que o horário de saída seja o da entrega do REDS
+                        presosHistorico[index].saida = now.toISOString();
+                    }
+                });
+                localStorage.setItem(RISCO_STORAGE_KEY, JSON.stringify(presosHistorico));
+                
+                alert(`Entrega dos presos do REDS ${redsId} registrada com sucesso. O histórico de Risco foi atualizado.`);
+
             }
         } else if (protocolo && protocolo.presos.length === 0) {
              alert('Não há presos incluídos neste REDS para marcar a entrega.');
@@ -331,7 +395,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- FUNÇÃO DE RENDERIZAÇÃO DA LISTA DE PROTOCOLOS (Atualizada com Batalhão) ---
+    // --- FUNÇÃO DE RENDERIZAÇÃO DA LISTA DE PROTOCOLOS (ALTERADA AQUI) ---
 
     function renderizarListaProtocolos(filtroReds = '') {
         const protocolos = getHistorico().sort((a, b) => b.id - a.id);
@@ -350,7 +414,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const statusText = isAberto ? 'ABERTO' : 'FINALIZADO';
             
             const card = document.createElement('div');
-            card.className = `protocol-card ${isAberto ? 'card-aberto' : 'card-finalizado'}`;
+            card.className = `protocolo-card ${isAberto ? 'card-aberto' : 'card-finalizado'}`;
             
             // 1. Cabeçalho (REDS, Batalhão, Data Lançamento e Encerrar)
             let header = `
@@ -369,29 +433,41 @@ document.addEventListener('DOMContentLoaded', () => {
             // 2. Oitivas (Militares)
             let oitivasHtml = p.guarnicao.map(militar => {
                 const m = militar.oitiva;
-                const nomeMilitar = militar.oitiva.nome;
+                
+                // MUDANÇA AQUI: Adiciona o telefone após o nome
+                const nomeMilitarComTelefone = militar.oitiva.nome + 
+                    (militar.telefone ? ` <span style="font-weight: normal; color: #999;">(${militar.telefone})</span>` : '');
 
-                let acoes;
+                // Novo agrupamento de ações para alinhamento
+                let acoesHtml; 
+
                 if (m.dispensado) {
-                    acoes = `<span class="timestamp" style="color: var(--cor-vermelho);">DISPENSADO em: ${m.dispensado.split(',')[1].trim()}</span>`;
+                    acoesHtml = `<span class="timestamp" style="color: var(--cor-vermelho);">DISPENSADO em: ${m.dispensado.split(',')[1].trim()}</span>`;
                 } else if (m.chegada && m.saida) {
-                    acoes = `<span class="timestamp">E: ${m.chegada.split(',')[1].trim()} | S: ${m.saida.split(',')[1].trim()}</span>`;
+                    acoesHtml = `<span class="timestamp">E: ${m.chegada.split(',')[1].trim()} | S: ${m.saida.split(',')[1].trim()}</span>`;
                 } else if (m.chegada) {
-                    acoes = `<span class="timestamp">E: ${m.chegada.split(',')[1].trim()}</span> | <button onclick="marcarOitiva('${p.reds}', '${militar.id}', 'saida')" class="action-btn secondary-btn x-small-btn">SAÍDA</button>`;
+                    // Botão de SAÍDA e texto de ENTRADA juntos
+                    acoesHtml = `
+                        <span class="timestamp">E: ${m.chegada.split(',')[1].trim()}</span>
+                        <button onclick="marcarOitiva('${p.reds}', '${militar.id}', 'saida')" class="action-btn secondary-btn x-small-btn">SAÍDA</button>`;
                 } else {
-                    acoes = `<button onclick="marcarOitiva('${p.reds}', '${militar.id}', 'entrada')" class="action-btn primary-btn x-small-btn">ENTRADA</button>
-                             <button onclick="marcarOitiva('${p.reds}', '${militar.id}', 'dispensado')" class="action-btn secondary-btn x-small-btn">DISPENSADO</button>`;
+                    // Botões ENTRADA e DISPENSADO lado a lado
+                    acoesHtml = `
+                        <button onclick="marcarOitiva('${p.reds}', '${militar.id}', 'entrada')" class="action-btn primary-btn x-small-btn">ENTRADA</button>
+                        <button onclick="marcarOitiva('${p.reds}', '${militar.id}', 'dispensado')" class="action-btn secondary-btn x-small-btn">DISPENSADO</button>`;
                 }
                 
                 return `
                     <li class="oitiva-item-list">
-                        <span class="oitiva-nome">${nomeMilitar}:</span>
-                        ${isAberto ? acoes : (m.dispensado || m.chegada ? acoes : '<span class="timestamp">NÃO ACIONADO</span>')}
+                        <span class="oitiva-nome">${nomeMilitarComTelefone}:</span> 
+                        <span class="oitiva-acoes-container"> 
+                            ${isAberto ? acoesHtml : (m.dispensado || m.chegada ? acoesHtml : '<span class="timestamp">NÃO ACIONADO</span>')}
+                        </span>
                     </li>
                 `;
             }).join('');
             
-            // 3. Presos e Entrega
+            // 3. Presos e Entrega (Mantido)
             let presosHtml = '';
             if (p.presos.length > 0) {
                 // Linha de Presos com Risco
@@ -445,7 +521,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
             }
 
-            // 4. PCNET
+            // 4. PCNET (Mantido)
             const pcnetData = p.pcnet.dataHora ? p.pcnet.dataHora.split(',')[1].trim() : 'AGUARDANDO LANÇAMENTO';
             const pcnetProtocolo = p.pcnet.protocolo || '__________';
             const pcnetBtn = isAberto && !p.pcnet.protocolo ? 
@@ -481,12 +557,9 @@ document.addEventListener('DOMContentLoaded', () => {
         renderizarListaProtocolos(e.target.value.trim());
     });
     
-    // CORREÇÃO: Remover o evento change problemático que estava travando
-    // O protocolo será criado automaticamente ao incluir o primeiro militar ou preso
     numeroREDSInput.addEventListener('blur', (e) => {
         const reds = e.target.value.trim().toUpperCase();
         const batalhao = batalhaoResponsavelSelect.value;
-        // CORREÇÃO: Verificar se tem pelo menos 15 caracteres
         if (reds.length >= 15 && batalhao !== '') { 
             const protocolos = getHistorico();
             const existente = protocolos.find(p => p.reds === reds);

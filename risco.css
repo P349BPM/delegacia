@@ -1,0 +1,225 @@
+/* risco.css */
+
+:root {
+    --cor-azul: #003366; /* Dark Blue PMMG */
+    --cor-gold: #FFC300; /* Gold PMMG */
+    --cor-vermelho: #dc3545; /* Danger */
+    --cor-verde: #28a745; /* Success */
+    --cor-cinza-claro: #f4f4f4;
+    --cor-branco: #ffffff;
+    --cor-preto: #333333;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--cor-cinza-claro);
+    color: var(--cor-preto);
+    line-height: 1.6;
+    padding: 0;
+    margin: 0;
+}
+
+header {
+    background-color: var(--cor-azul);
+    color: var(--cor-branco);
+    padding: 15px 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8em;
+}
+
+main {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid var(--cor-gold);
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+}
+
+.section-header h2 {
+    color: var(--cor-branco);
+    margin: 0;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+/* --- Tabela/Lista de Presos --- */
+
+.prisoners-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Coluna única por padrão */
+    gap: 15px;
+}
+
+@media (min-width: 768px) {
+    .prisoners-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 2 ou mais colunas em telas maiores */
+    }
+}
+
+.prisoner-card {
+    background-color: var(--cor-branco);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    transition: transform 0.2s;
+}
+
+.prisoner-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.risk-tag {
+    /* Herda o estilo do protocolo.html (risk-pill) */
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 0.85em;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--cor-branco);
+}
+
+.risk-tag-ALTO { 
+    background-color: var(--cor-vermelho); 
+}
+.risk-tag-MÉDIO { 
+    background-color: var(--cor-gold); 
+    color: var(--cor-azul); /* Texto escuro para contraste no amarelo */
+}
+.risk-tag-BAIXO { 
+    background-color: var(--cor-verde); 
+}
+
+.prisoner-details h3 {
+    margin: 0;
+    font-size: 1.1em;
+    color: var(--cor-azul);
+}
+
+.prisoner-details p {
+    margin: 3px 0;
+    font-size: 0.9em;
+    color: #666;
+}
+
+/* --- Linha de Status e Ação --- */
+.status-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px dotted #ccc;
+}
+
+.status-line strong {
+    color: var(--cor-preto);
+}
+
+.timer {
+    font-weight: bold;
+    color: var(--cor-vermelho); /* Tempo em destaque */
+}
+
+/* Botões */
+.action-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.receive-btn {
+    background-color: var(--cor-verde);
+    color: var(--cor-branco);
+}
+
+.receive-btn:hover {
+    background-color: #1e7e34;
+}
+
+/* Histórico */
+.history-item {
+    background-color: #fff;
+    border-left: 5px solid var(--cor-azul);
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    font-size: 0.9em;
+}
+
+.history-item p {
+    margin: 2px 0;
+}
+
+.history-item strong {
+    color: var(--cor-azul);
+}
+
+.empty-list {
+    text-align: center;
+    color: #888;
+    padding: 20px;
+    border: 1px dashed #ccc;
+    border-radius: 5px;
+}
+
+.back-btn {
+    display: inline-block;
+    text-decoration: none;
+    background-color: var(--cor-gold);
+    color: var(--cor-azul);
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-right: 15px;
+}
+
+/* --- CSS para Alerta de Risco --- */
+
+/* Define a animação de piscar */
+@keyframes blink {
+    0% { background-color: transparent; }
+    50% { background-color: var(--cor-vermelho); color: var(--cor-branco); } /* Cor Vermelha PMMG */
+    100% { background-color: transparent; }
+}
+
+/* Classe que será adicionada pelo JavaScript */
+.alerta-risco-ativo {
+    animation: blink 1s step-end infinite;
+    padding: 10px; /* Adiciona padding para o efeito ser visível */
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(220, 53, 69, 0.5); /* Sombra para destaque */
+}
+
+/* Garante que o texto do H2 não suma ao piscar */
+.alerta-risco-ativo h2 {
+    color: var(--cor-branco) !important; 
+}

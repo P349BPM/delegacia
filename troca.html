@@ -5,25 +5,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Troca de Serviço - DEPLAN PMMG</title>
-    
+
     <link rel="stylesheet" href="sistema.css">
-    
+
 </head>
 
 <body>
 
-    <header>
-        <img src="img/logo.png" alt="Logo PMMG">
-        <h1>Controle de Delegacia - PMMG</h1>
-    </header>
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DEPLAN PMMG - Menu Principal</title>
+        <link rel="stylesheet" href="sistema.css">
+    </head>
+
+    <body>
+
+        <header>
+            <img src="img/logo.png" alt="Logo PMMG" class="header-logo">
+            <h1>Controle de Delegacia - PMMG</h1>    
+        </header>
+
+        <nav id="main-nav">
+            <ul>
+                <li><a href="index.html" class="nav-link active">🏠 Menu Principal</a></li>          
+                <li><a href="protocolo.html" class="nav-link">📄 Protocolo de Documentos</a></li>
+                <li><a href="risco.html" class="nav-link">⛓️ Guardas & Risco de Presos</a></li>
+            </ul>
+        </nav>
+        <main>
+            <div class="card-grid">
+            </div>
+        </main>
+
+        <footer>
+        </footer>
+
+        <script src="sistema.js"></script>
+
+    </body>
+
+    </html>
 
     <main class="content">
 
         <h2>Troca de Serviço</h2>
-        
-        <a href="index.html" class="back-btn action-btn secondary-btn">
-            ← Voltar ao Menu Principal
-        </a>
+
         <div class="military-input-area entry-area">
             <h3>Dados do Militar que Assumirá o Serviço</h3>
 
@@ -65,7 +95,7 @@
             <ul id="listaMilitaresEntrada">
             </ul>
         </div>
-        
+
         <div class="report-data-area">
             <h3>Informações do Serviço Entregue</h3>
 
@@ -98,9 +128,9 @@
                 Salvar Relatório e Finalizar Troca
             </button>
         </div>
-        
+
         <div class="action-row final-action" style="margin-top: 5px;">
-             <button id="exportarRelatorioBtn" class="action-btn secondary-btn large-btn">
+            <button id="exportarRelatorioBtn" class="action-btn secondary-btn large-btn">
                 ⬇️ Exportar Relatório do Último Turno
             </button>
         </div>
@@ -115,7 +145,7 @@
 
     <footer>© PMMG - Sistema de Gestão DEPLAN</footer>
 
-    <script src="sistema.js"></script> 
+    <script src="sistema.js"></script>
 
 </body>
 

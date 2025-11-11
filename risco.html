@@ -1,17 +1,84 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recebimento de Presos e Risco</title>
-    <style>
-        body { font-family: sans-serif; background-color: #F5E8C7; text-align: center; padding: 20px; }
-        h1 { color: #dc3545; }
-    </style>
+    <title>Recebimento de Presos e Risco - DEPLAN PMMG</title>
+
+    <link rel="stylesheet" href="sistema.css">
+
+    <link rel="stylesheet" href="risco.css">
 </head>
+
 <body>
-    <h1>⛓️ Cadastro de Presos Recebidos e Gestão de Risco</h1>
-    <p>Aqui estará o formulário detalhado de Cadastro de Presos e Militares da Guarnição, junto com a gestão de periculosidade.</p>
-    <a href="index.html">← Voltar ao Menu Principal</a>
+
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DEPLAN PMMG - Menu Principal</title>
+        <link rel="stylesheet" href="sistema.css">
+    </head>
+
+    <body>
+
+        <header>
+            <img src="img/logo.png" alt="Logo PMMG" class="header-logo">
+            <h1>Controle de Delegacia - PMMG</h1>    
+        </header>
+
+        <nav id="main-nav">
+            <ul>
+                <li><a href="index.html" class="nav-link active">🏠 Menu Principal</a></li>
+
+                <li><a href="troca.html" class="nav-link">🔄 Troca de Serviço</a></li>
+                <li><a href="protocolo.html" class="nav-link">📄 Protocolo de Documentos</a></li>                
+            </ul>
+        </nav>
+        <main>
+            <div class="card-grid">
+            </div>
+        </main>
+
+        <footer>
+        </footer>
+
+        <script src="sistema.js"></script>
+
     </body>
+
+    </html>
+
+    <main>
+        <div class="a-receber-section">
+            <div class="section-header" id="alertaRiscoContainer">
+                <h2>Presos Aguardando Recebimento (A RECEBER)</h2>
+            </div>
+
+            <div id="prisonersAReceber" class="prisoners-grid">
+                <p class="empty-list">Nenhum preso aguardando recebimento.</p>
+            </div>
+        </div>
+
+        <hr style="margin: 50px 0; border: 0; border-top: 1px solid #ccc;">
+
+        <div class="historico-section">
+            <div class="section-header">
+                <h2>Histórico de Recebimento Encerrados</h2>
+            </div>
+
+            <div id="prisonersHistorico">
+                <p class="empty-list">Nenhum preso no histórico de recebimento.</p>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="risco.js"></script>
+
+</body>
+
 </html>
